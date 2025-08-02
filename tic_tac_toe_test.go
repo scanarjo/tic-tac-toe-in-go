@@ -81,6 +81,24 @@ func TestMoveOutOfBounds(t *testing.T) {
 	}
 }
 
+func TestIllegalMove(t *testing.T) {
+	game := NewGame()
+
+	firstPlayer := game.Next
+
+	game.Move(0, 0)
+
+	err := game.Move(0, 0)
+
+	if err == nil {
+		t.Error("Expected an error when making an already played move, but got none")
+	}
+
+	if game.Board[0][0] != firstPlayer {
+		t.Errorf("Expected cell not to be overwritten, should be %q but got %q", firstPlayer, game.Board[0][0])
+	}
+}
+
 func TestString(t *testing.T) {
 	game := NewGame()
 

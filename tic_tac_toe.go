@@ -50,6 +50,10 @@ func (game *Game) Move(row, col int) error {
 		return fmt.Errorf("Move out of bounds: %d, %d", row, col)
 	}
 
+	if game.Board[row][col] != BLANK {
+		return fmt.Errorf("Illegal move: Cell (%d,%d) already contains %q", row, col, game.Board[row][col])
+	}
+
 	game.Board[row][col] = game.Next
 
 	game.changePlayer()
