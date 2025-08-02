@@ -1,46 +1,9 @@
 package main
 
-import (
-	"bufio"
-	"fmt"
-	"os"
-	"strings"
-)
+import "os"
 
 func main() {
-	game := NewGame()
-	fmt.Println("Starting a new game of Tic Tac Toe...")
-	fmt.Println(game)
+	game := NewCLIGameWithIO(os.Stdin, os.Stdout)
 
-	scanner := bufio.NewScanner(os.Stdin)
-
-	for !game.IsOver() {
-		fmt.Printf("Player %c, enter your move (row col): ", game.Next)
-
-		if scanner.Scan() {
-			input := strings.TrimSpace(scanner.Text())
-
-			var row, col int
-
-			_, err := fmt.Sscanf(input, "%d %d", &row, &col)
-			if err != nil {
-				fmt.Println("Invalid input. Please enter your move as 'row col'.")
-				continue
-			}
-
-			err = game.Move(row, col)
-			if err != nil {
-				fmt.Println("Error:", err)
-				continue
-			}
-
-			fmt.Println(game)
-		}
-	}
-
-	if winner := game.Winner(); winner != BLANK {
-		fmt.Printf("Game over! Player %c wins!\n", winner)
-	} else {
-		fmt.Println("Game over! It's a draw!")
-	}
+	game.Start()
 }
