@@ -3,6 +3,7 @@ package tic_tac_toe
 import (
 	"fmt"
 	"math/rand"
+	"strings"
 )
 
 type Board [3][3]rune
@@ -54,4 +55,26 @@ func (game *Game) Move(row, col int) error {
 	game.changePlayer()
 
 	return nil
+}
+
+func printCell(c rune) string {
+	switch c {
+	case X:
+		return "X"
+	case O:
+		return "O"
+	default:
+		return "_"
+	}
+}
+
+func (game *Game) String() string {
+	var result string
+	for _, row := range game.Board {
+		for _, cell := range row {
+			result += fmt.Sprintf("%s ", printCell(cell))
+		}
+		result = strings.Trim(result, " ") + "\n"
+	}
+	return result
 }

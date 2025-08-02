@@ -1,6 +1,7 @@
 package tic_tac_toe
 
 import (
+	"fmt"
 	"reflect"
 	"testing"
 )
@@ -77,5 +78,39 @@ func TestMoveOutOfBounds(t *testing.T) {
 
 	if err == nil {
 		t.Error("Expected an error when moving out of bounds, but got none")
+	}
+}
+
+func TestString(t *testing.T) {
+	game := NewGame()
+
+	output := fmt.Sprintf("%s", game)
+
+	expected := `_ _ _
+_ _ _
+_ _ _
+`
+
+	if output != expected {
+		t.Errorf("Expected output %q but got %q", expected, output)
+	}
+
+	if game.Next == 'X' {
+		game.Move(0, 0)
+		game.Move(1, 1)
+	} else {
+		game.Move(1, 1)
+		game.Move(0, 0)
+	}
+
+	output = fmt.Sprintf("%s", game)
+
+	expected = `X _ _
+_ O _
+_ _ _
+`
+
+	if output != expected {
+		t.Errorf("Expected output %q but got %q", expected, output)
 	}
 }
