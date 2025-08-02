@@ -1,4 +1,4 @@
-package tic_tac_toe
+package main
 
 import (
 	"fmt"
@@ -19,7 +19,7 @@ func TestNewGame(t *testing.T) {
 		t.Errorf("Expected %q, but got %q", freshBoard, game.Board)
 	}
 
-	if game.IsOver {
+	if game.Winner != ' ' {
 		t.Error("Expected game to not be over, but it is")
 	}
 

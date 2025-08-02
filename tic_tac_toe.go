@@ -1,4 +1,4 @@
-package tic_tac_toe
+package main
 
 import (
 	"fmt"
@@ -11,7 +11,7 @@ type Board [3][3]rune
 type Game struct {
 	Board  Board
 	Next   rune
-	IsOver bool
+	Winner rune
 }
 
 const (
@@ -27,12 +27,13 @@ func NewGame() *Game {
 	firstPlayer := players[rand.Intn(2)]
 
 	return &Game{
-		Next: firstPlayer,
 		Board: Board{
 			{BLANK, BLANK, BLANK},
 			{BLANK, BLANK, BLANK},
 			{BLANK, BLANK, BLANK},
 		},
+		Next:   firstPlayer,
+		Winner: BLANK,
 	}
 }
 
