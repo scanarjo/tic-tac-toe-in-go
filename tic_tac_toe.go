@@ -74,14 +74,20 @@ func printCell(c rune) string {
 }
 
 func (game *Game) String() string {
-	var result string
+	var result strings.Builder
 	for _, row := range game.Board {
-		for _, cell := range row {
-			result += fmt.Sprintf("%s ", printCell(cell))
+		for i, cell := range row {
+			result.WriteString(printCell(cell))
+
+			if i != len(row)-1 {
+				result.WriteString(" ")
+			}
 		}
-		result = strings.Trim(result, " ") + "\n"
+
+		result.WriteString("\n")
 	}
-	return result
+
+	return result.String()
 }
 
 func (game *Game) IsOver() bool {
