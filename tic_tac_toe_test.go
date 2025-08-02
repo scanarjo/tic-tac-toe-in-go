@@ -19,7 +19,7 @@ func TestNewGame(t *testing.T) {
 		t.Errorf("Expected %q, but got %q", freshBoard, game.Board)
 	}
 
-	if game.Winner != ' ' {
+	if game.IsOver() {
 		t.Error("Expected game to not be over, but it is")
 	}
 
@@ -130,5 +130,107 @@ _ _ _
 
 	if output != expected {
 		t.Errorf("Expected output %q but got %q", expected, output)
+	}
+}
+
+func TestIsOverWhenFull(t *testing.T) {
+	game := NewGame()
+
+	fullBoard := Board{
+		{'X', 'O', 'X'},
+		{'O', 'X', 'O'},
+		{'O', 'X', 'O'},
+	}
+
+	game.Board = fullBoard
+
+	if !game.IsOver() {
+		t.Error("Expected game to be over when board is full, but it is not")
+	}
+}
+
+func TestDetectsRowWin(t *testing.T) {
+	cases := []struct {
+		board  Board
+		winner rune
+	}{
+		{
+			board: Board{
+				{'X', 'X', 'X'},
+				{'O', 'O', ' '},
+				{' ', ' ', ' '},
+			},
+			winner: 'X',
+		},
+		{
+			board: Board{
+				{' ', ' ', ' '},
+				{'O', 'O', 'O'},
+				{'X', ' ', 'X'},
+			},
+			winner: 'O',
+		},
+		{
+			board: Board{
+				{' ', ' ', ' '},
+				{' ', ' ', ' '},
+				{'X', 'X', 'X'},
+			},
+			winner: 'X',
+		},
+	}
+
+	for _, c := range cases {
+		game := NewGame()
+		game.Board = c.board
+
+		game.Next = 'X' // Set next player to X for testing
+
+		if !game.IsOver() {
+			t.Error("Expected game to be over, but it is not")
+		}
+
+		if game.Winner() != c.winner {
+			t.Errorf("Expected winner %q, but got %q", c.winner, game.Winner())
+		}
+	}
+}
+
+func TestDetectsColumnWin(t *testing.T) {
+	cases := []struct {
+		board  Board
+		winner rune
+	}{
+		{
+			board: Board{
+				{'X', 'O', ' '},
+				{'X', 'O', ' '},
+				{'X', ' ', ' '},
+			},
+			winner: 'X',
+		},
+		{
+			board: Board{
+				{'O', ' ', 'X'},
+				{'O', ' ', 'X'},
+				{' ', ' ', 'X'},
+			},
+			winner: 'X',
+		},
+	}
+
+	for _, c := range cases {
+		game := NewGame()
+		game.Board = c.board
+
+		game.Next = 'X' // Set next player to X for testing
+
+		if !game.IsOver() {
+			t.Error("Expected game to be over, but it is not")
+		}
+
+		if game.Winner() != c.winner {
+			t.Errorf("Expected winner %q, but got %q", c.winner, game.Winner())
+		}
 	}
 }

@@ -14,7 +14,7 @@ func main() {
 
 	scanner := bufio.NewScanner(os.Stdin)
 
-	for game.Winner == ' ' {
+	for !game.IsOver() {
 		fmt.Printf("Player %c, enter your move (row col): ", game.Next)
 
 		if scanner.Scan() {

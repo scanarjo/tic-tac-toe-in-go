@@ -6,12 +6,13 @@ import (
 	"strings"
 )
 
-type Board [3][3]rune
+type Row [3]rune
+
+type Board [3]Row
 
 type Game struct {
-	Board  Board
-	Next   rune
-	Winner rune
+	Board Board
+	Next  rune
 }
 
 const (
@@ -32,8 +33,7 @@ func NewGame() *Game {
 			{BLANK, BLANK, BLANK},
 			{BLANK, BLANK, BLANK},
 		},
-		Next:   firstPlayer,
-		Winner: BLANK,
+		Next: firstPlayer,
 	}
 }
 
@@ -82,4 +82,46 @@ func (game *Game) String() string {
 		result = strings.Trim(result, " ") + "\n"
 	}
 	return result
+}
+
+func (game *Game) IsOver() bool {
+	if game.Winner() != BLANK {
+		return true
+	}
+
+	for _, row := range game.Board {
+		for _, cell := range row {
+			if cell == BLANK {
+				return false
+			}
+		}
+	}
+
+	return true
+}
+
+func checkRow(row Row) rune {
+	if row[0] == row[1] && row[1] == row[2] && row[0] != BLANK {
+		return row[0]
+	}
+
+	return BLANK
+}
+
+func (game *Game) Winner() rune {
+	for row := 0; row < 3; row++ {
+		winner := checkRow(game.Board[row])
+		if winner != BLANK {
+			return winner
+		}
+	}
+
+	for col := 0; col < 3; col++ {
+		winner := checkRow(Row{game.Board[0][col], game.Board[1][col], game.Board[2][col]})
+		if winner != BLANK {
+			return winner
+		}
+	}
+
+	return BLANK
 }
