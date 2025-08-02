@@ -115,14 +115,14 @@ func checkRow(row Row) rune {
 }
 
 func (game *Game) Winner() rune {
-	for row := 0; row < 3; row++ {
-		winner := checkRow(game.Board[row])
+	for _, row := range game.Board {
+		winner := checkRow(row)
 		if winner != BLANK {
 			return winner
 		}
 	}
 
-	for col := 0; col < 3; col++ {
+	for col := range game.Board[0] {
 		winner := checkRow(Row{game.Board[0][col], game.Board[1][col], game.Board[2][col]})
 		if winner != BLANK {
 			return winner
