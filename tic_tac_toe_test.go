@@ -150,87 +150,94 @@ func TestIsOverWhenFull(t *testing.T) {
 }
 
 func TestDetectsRowWin(t *testing.T) {
-	cases := []struct {
-		board  Board
-		winner rune
+	tests := []struct {
+		name     string
+		board    Board
+		expected rune
 	}{
 		{
+			name: "top row X wins",
 			board: Board{
 				{'X', 'X', 'X'},
 				{'O', 'O', ' '},
 				{' ', ' ', ' '},
 			},
-			winner: 'X',
+			expected: 'X',
 		},
 		{
+			name: "middle row O wins",
 			board: Board{
 				{' ', ' ', ' '},
 				{'O', 'O', 'O'},
 				{'X', ' ', 'X'},
 			},
-			winner: 'O',
+			expected: 'O',
 		},
 		{
+			name: "bottom row X wins",
 			board: Board{
 				{' ', ' ', ' '},
 				{' ', ' ', ' '},
 				{'X', 'X', 'X'},
 			},
-			winner: 'X',
+			expected: 'X',
 		},
 	}
 
-	for _, c := range cases {
-		game := NewGame()
-		game.Board = c.board
+	for _, test := range tests {
+		t.Run(test.name, func(t *testing.T) {
+			game := NewGame()
+			game.Board = test.board
 
-		game.Next = 'X' // Set next player to X for testing
+			if !game.IsOver() {
+				t.Error("Expected game to be over, but it is not")
+			}
 
-		if !game.IsOver() {
-			t.Error("Expected game to be over, but it is not")
-		}
-
-		if game.Winner() != c.winner {
-			t.Errorf("Expected winner %q, but got %q", c.winner, game.Winner())
-		}
+			if game.Winner() != test.expected {
+				t.Errorf("Expected winner %q, but got %q", test.expected, game.Winner())
+			}
+		})
 	}
 }
 
 func TestDetectsColumnWin(t *testing.T) {
-	cases := []struct {
-		board  Board
-		winner rune
+	tests := []struct {
+		name     string
+		board    Board
+		expected rune
 	}{
 		{
+			name: "first column X wins",
 			board: Board{
 				{'X', 'O', ' '},
 				{'X', 'O', ' '},
 				{'X', ' ', ' '},
 			},
-			winner: 'X',
+			expected: 'X',
 		},
 		{
+			name: "third column X wins",
 			board: Board{
 				{'O', ' ', 'X'},
 				{'O', ' ', 'X'},
 				{' ', ' ', 'X'},
 			},
-			winner: 'X',
+			expected: 'X',
 		},
 	}
 
-	for _, c := range cases {
-		game := NewGame()
-		game.Board = c.board
+	for _, test := range tests {
+		t.Run(test.name, func(t *testing.T) {
+			game := NewGame()
+			game.Board = test.board
 
-		game.Next = 'X' // Set next player to X for testing
+			if !game.IsOver() {
+				t.Error("Expected game to be over, but it is not")
+			}
 
-		if !game.IsOver() {
-			t.Error("Expected game to be over, but it is not")
-		}
-
-		if game.Winner() != c.winner {
-			t.Errorf("Expected winner %q, but got %q", c.winner, game.Winner())
-		}
+			if game.Winner() != test.expected {
+				t.Errorf("Expected winner %q, but got %q", test.expected, game.Winner())
+			}
+		})
 	}
 }
