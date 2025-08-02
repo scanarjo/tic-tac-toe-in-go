@@ -1,6 +1,9 @@
 package tic_tac_toe
 
-import "math/rand"
+import (
+	"fmt"
+	"math/rand"
+)
 
 type Board [3][3]rune
 
@@ -10,10 +13,13 @@ type Game struct {
 	IsOver bool
 }
 
+const (
+	BLANK = ' '
+	X     = 'X'
+	O     = 'O'
+)
+
 func NewGame() *Game {
-	const BLANK = ' '
-	const X = 'X'
-	const O = 'O'
 
 	players := [2]rune{X, O}
 
@@ -27,4 +33,25 @@ func NewGame() *Game {
 			{BLANK, BLANK, BLANK},
 		},
 	}
+}
+
+func (game *Game) changePlayer() {
+	switch game.Next {
+	case X:
+		game.Next = O
+	case O:
+		game.Next = X
+	}
+}
+
+func (game *Game) Move(row, col int) error {
+	if row < 0 || row >= len(game.Board) || col < 0 || col >= len(game.Board[row]) {
+		return fmt.Errorf("Move out of bounds: %d, %d", row, col)
+	}
+
+	game.Board[row][col] = game.Next
+
+	game.changePlayer()
+
+	return nil
 }
