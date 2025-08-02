@@ -241,3 +241,45 @@ func TestDetectsColumnWin(t *testing.T) {
 		})
 	}
 }
+
+func TestDiagonalWin(t *testing.T) {
+	tests := []struct {
+		name     string
+		board    Board
+		expected rune
+	}{
+		{
+			name: "top-left to bottom-right X wins",
+			board: Board{
+				{'X', 'O', ' '},
+				{'O', 'X', ' '},
+				{' ', ' ', 'X'},
+			},
+			expected: 'X',
+		},
+		{
+			name: "top-right to bottom-left O wins",
+			board: Board{
+				{' ', ' ', 'O'},
+				{'X', 'O', 'X'},
+				{'O', 'X', ' '},
+			},
+			expected: 'O',
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			game := NewGame()
+			game.Board = tt.board
+
+			if !game.IsOver() {
+				t.Error("Expected game to be over, but it is not")
+			}
+
+			if game.Winner() != tt.expected {
+				t.Errorf("Expected winner %q, but got %q", tt.expected, game.Winner())
+			}
+		})
+	}
+}

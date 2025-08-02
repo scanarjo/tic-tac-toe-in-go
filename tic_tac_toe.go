@@ -22,7 +22,6 @@ const (
 )
 
 func NewGame() *Game {
-
 	players := [2]rune{X, O}
 
 	firstPlayer := players[rand.Intn(2)]
@@ -38,10 +37,9 @@ func NewGame() *Game {
 }
 
 func (game *Game) changePlayer() {
-	switch game.Next {
-	case X:
+	if game.Next == X {
 		game.Next = O
-	case O:
+	} else {
 		game.Next = X
 	}
 }
@@ -127,6 +125,16 @@ func (game *Game) Winner() rune {
 		if winner != BLANK {
 			return winner
 		}
+	}
+
+	winner := checkRow(Row{game.Board[0][0], game.Board[1][1], game.Board[2][2]})
+	if winner != BLANK {
+		return winner
+	}
+
+	winner = checkRow(Row{game.Board[0][2], game.Board[1][1], game.Board[2][0]})
+	if winner != BLANK {
+		return winner
 	}
 
 	return BLANK
