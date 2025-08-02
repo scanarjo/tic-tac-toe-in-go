@@ -37,4 +37,10 @@ func main() {
 			fmt.Println(game)
 		}
 	}
+
+	if winner := game.Winner(); winner != BLANK {
+		fmt.Printf("Game over! Player %c wins!\n", winner)
+	} else {
+		fmt.Println("Game over! It's a draw!")
+	}
 }
