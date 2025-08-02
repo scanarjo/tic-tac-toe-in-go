@@ -184,17 +184,17 @@ func TestDetectsRowWin(t *testing.T) {
 		},
 	}
 
-	for _, test := range tests {
-		t.Run(test.name, func(t *testing.T) {
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
 			game := NewGame()
-			game.Board = test.board
+			game.Board = tt.board
 
 			if !game.IsOver() {
 				t.Error("Expected game to be over, but it is not")
 			}
 
-			if game.Winner() != test.expected {
-				t.Errorf("Expected winner %q, but got %q", test.expected, game.Winner())
+			if game.Winner() != tt.expected {
+				t.Errorf("Expected winner %q, but got %q", tt.expected, game.Winner())
 			}
 		})
 	}
@@ -226,17 +226,17 @@ func TestDetectsColumnWin(t *testing.T) {
 		},
 	}
 
-	for _, test := range tests {
-		t.Run(test.name, func(t *testing.T) {
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
 			game := NewGame()
-			game.Board = test.board
+			game.Board = tt.board
 
 			if !game.IsOver() {
 				t.Error("Expected game to be over, but it is not")
 			}
 
-			if game.Winner() != test.expected {
-				t.Errorf("Expected winner %q, but got %q", test.expected, game.Winner())
+			if game.Winner() != tt.expected {
+				t.Errorf("Expected winner %q, but got %q", tt.expected, game.Winner())
 			}
 		})
 	}
